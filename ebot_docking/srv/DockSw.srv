@@ -1,0 +1,7 @@
+bool docking
+float64 orientation
+string id
+float64 drop_goal
+---
+bool success  
+string message
