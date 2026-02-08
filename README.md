@@ -72,9 +72,7 @@ This setup reflects real-world warehouse automation pipelines involving mobile r
 
 Project demonstration video:
 
-```
-https://youtu.be/Ah8l9qyM8Ow
-```
+[Watch the demo video](https://youtu.be/Ah8l9qyM8Ow)
 
 ---
 
