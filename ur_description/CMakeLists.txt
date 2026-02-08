@@ -31,7 +31,6 @@ endif()
  
 install(PROGRAMS
   scripts/task1a.py
-  scripts/testerfr.py
   scripts/task3b.py
   scripts/armed/spawner_box_com.py
   DESTINATION lib/${PROJECT_NAME}

@@ -1,4 +1,4 @@
-   #! /usr/bin/env python3
+#! /usr/bin/env python3
 # Copyright 2021 Samsung Research America
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +16,7 @@
 from geometry_msgs.msg import PoseStamped
 from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 import rclpy
+from ament_index_python.packages import get_package_share_directory
 import os
 import yaml
 import math
@@ -35,7 +36,13 @@ Basic navigation demo to go to pose.
 def main():
     rclpy.init()
 
-    config_path = os.path.join(os.path.pardir, '..', 'eyantra_warehouse', 'config', 'config.yaml')
+    pkg_share = get_package_share_directory('eyantra_warehouse')
+    config_path = os.path.join(pkg_share, 'config', 'config.yaml')
+
+
+
+
+    # config_path = os.path.join(os.path.pardir, '..', 'eyantra_warehouse', 'config', 'config.yaml')
     with open(config_path, 'r') as file:
         config = yaml.safe_load(file)
     package_id = config.get('package_id', [])[0]
