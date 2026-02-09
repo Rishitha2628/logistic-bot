@@ -39,7 +39,7 @@ else
 fi
 
 echo -e "\e[34mUpdating SkyX_Moon.fragment and SkyX_Moon.png for gazebo environment setup...\e[0m"
-sudo cp eyantra_warehouse/config/SkyX_Moon.fragment /usr/share/gazebo-11/media/skyx/SkyX_Moon.fragment
-sudo cp eyantra_warehouse/config/SkyX_Moon.png /usr/share/gazebo-11/media/skyx/SkyX_Moon.png
+sudo cp warehouse/config/SkyX_Moon.fragment /usr/share/gazebo-11/media/skyx/SkyX_Moon.fragment
+sudo cp warehouse/config/SkyX_Moon.png /usr/share/gazebo-11/media/skyx/SkyX_Moon.png
 
 echo -e "\e[32m---------------------------------\nSetup complete!\n---------------------------------\n\e[0m"

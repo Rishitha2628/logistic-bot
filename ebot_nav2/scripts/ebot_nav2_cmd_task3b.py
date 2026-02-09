@@ -20,7 +20,7 @@ from ament_index_python.packages import get_package_share_directory
 import os
 import yaml
 import math
-# from eyantra_warehouse.config import config.yaml
+# from warehouse.config import config.yaml
 from rclpy.node import Node
 
 from rclpy.duration import Duration
@@ -36,13 +36,13 @@ Basic navigation demo to go to pose.
 def main():
     rclpy.init()
 
-    pkg_share = get_package_share_directory('eyantra_warehouse')
+    pkg_share = get_package_share_directory('warehouse')
     config_path = os.path.join(pkg_share, 'config', 'config.yaml')
 
 
 
 
-    # config_path = os.path.join(os.path.pardir, '..', 'eyantra_warehouse', 'config', 'config.yaml')
+    # config_path = os.path.join(os.path.pardir, '..', 'warehouse', 'config', 'config.yaml')
     with open(config_path, 'r') as file:
         config = yaml.safe_load(file)
     package_id = config.get('package_id', [])[0]

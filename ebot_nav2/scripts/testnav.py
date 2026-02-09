@@ -19,7 +19,7 @@ import rclpy
 import os
 import yaml
 import math
-# from eyantra_warehouse.config import config.yaml
+# from warehouse.config import config.yaml
 from rclpy.node import Node
 
 from rclpy.duration import Duration
@@ -45,7 +45,7 @@ def main(args=None):
     # while not client.wait_for_service(timeout_sec=1.0):
     #     node.get_logger().info('Service not available, waiting again...')
 
-    config_path = os.path.join(os.path.pardir, '..', 'eyantra_warehouse', 'config', 'config.yaml')
+    config_path = os.path.join(os.path.pardir, '..', 'warehouse', 'config', 'config.yaml')
     with open(config_path, 'r') as file:
         config = yaml.safe_load(file)
     package_id = config.get('package_id', [])[0]
