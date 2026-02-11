@@ -130,7 +130,7 @@ controller_server:
     general_goal_checker:
       stateful: False
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.25 #0.25
+      xy_goal_tolerance: 0.25
       yaw_goal_tolerance: 3.14
     # DWB parameters
     FollowPath:
@@ -138,19 +138,19 @@ controller_server:
       debug_trajectory_details: True
       min_vel_x: 0.0
       min_vel_y: 0.0
-      max_vel_x: 6.0  # Increase the maximum linear velocity
+      max_vel_x: 5.0  # Increase the maximum linear velocity
       max_vel_y: 0.0
-      max_vel_theta: 19.5  # Increase the maximum angular velocity
+      max_vel_theta: 14.0  # Increase the maximum angular velocity
       min_speed_xy: 0.0
-      max_speed_xy: 0.87 #1.005 #0.8  # Increase the maximum speed in the xy plane
+      max_speed_xy: 1.0 #0.8  # Increase the maximum speed in the xy plane
       min_speed_theta: 0.0
 
-      acc_lim_x: 20.0  # Increase the linear acceleration limit
+      acc_lim_x: 10.0  # Increase the linear acceleration limit
       acc_lim_y: 0.0
-      acc_lim_theta: 19.5  # Increase the angular acceleration limit
-      decel_lim_x: -2.0  # Increase the linear deceleration limit
+      acc_lim_theta: 14.0  # Increase the angular acceleration limit
+      decel_lim_x: -3.0  # Increase the linear deceleration limit
       decel_lim_y: 0.0
-      decel_lim_theta: -7.0  # Increase the angular deceleration limit
+      decel_lim_theta: -5.0  # Increase the angular deceleration limit
 
       vx_samples: 20
       vy_samples: 5
@@ -340,17 +340,17 @@ waypoint_follower:
     wait_at_waypoint:
       plugin: "nav2_waypoint_follower::WaitAtWaypoint"
       enabled: True
-      waypoint_pause_duration: 100
+      waypoint_pause_duration: 200
 
 velocity_smoother:
   ros__parameters:
     smoothing_frequency: 20.0
     scale_velocities: False
     feedback: "OPEN_LOOP"
-    max_velocity: [4.0, 0.0, 2.0]
-    min_velocity: [-3.2, 0.0, -2.0]
-    max_accel: [7.0, 0.0, 6.2]
-    max_decel: [-4.0, 0.0, -6.2]
+    max_velocity: [1.6, 0.0, 2.0]
+    min_velocity: [-1.6, 0.0, -2.0]
+    max_accel: [1.5, 0.0, 6.2]
+    max_decel: [-1.5, 0.0, -6.2]
     odom_topic: "/odometry/filtered"
     odom_duration: 0.1
     deadband_velocity: [0.0, 0.0, 0.0]

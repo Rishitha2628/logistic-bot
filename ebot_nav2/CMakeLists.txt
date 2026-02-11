@@ -39,7 +39,6 @@ endif()
 install(
   DIRECTORY
     launch
-    scripts
     config
     maps
     params
@@ -50,19 +49,12 @@ install(
 
 install(
   PROGRAMS
+  scripts/nav_run.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
 install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
-  
-  
-)
-
-install(PROGRAMS
-	scripts/ebot_nav2_cmd_task3b.py
-  DESTINATION lib/${PROJECT_NAME}
-  
 )
 
 ament_package()

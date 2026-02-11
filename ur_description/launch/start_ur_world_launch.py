@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -14,7 +15,7 @@ from launch_ros.actions import Node
 from launch.actions import ExecuteProcess
 from ament_index_python.packages import get_package_prefix
 
-pkg_name='warehouse'
+pkg_name='eyantra_warehouse'
 
 def generate_launch_description():
 
@@ -47,7 +48,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
           'world',
-          default_value=[os.path.join(pkg_models_dir, 'worlds', 'warehouse_task2a.world'), ''], # Change name of world file if required.
+          default_value=[os.path.join(pkg_models_dir, 'worlds', 'eyantra_warehouse_task2a.world'), ''], # Change name of world file if required.
           description='SDF world file'),
         gazebo,
         spawner_box

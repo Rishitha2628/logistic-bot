@@ -1,6 +1,23 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+''' 
+*****************************************************************************************
+*
+*        =============================================
+*                  TBD Theme (eYRC 2023-24)
+*        =============================================
+*
+*
+*  Filename:			ebot_display_launch.py
+*  Description:         Use this file to spawn ebot inside e-yantra warehouse world in the gazebo simulator and publish robot states.
+*  Created:				16/07/2023
+*  Last Modified:	    16/07/2023
+*  Modified by:         Archit, Jaison
+*  Author:				e-Yantra Team
+*  
+*****************************************************************************************
+'''
 
 import launch
 import launch_ros
@@ -27,7 +44,7 @@ def generate_launch_description():
 
     start_world = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('ebot_description'), 'launch', 'start_world_launch_3.py'),
+            os.path.join(get_package_share_directory('ebot_description'), 'launch', 'start_world_launch_4.py'),
         )
     )
 

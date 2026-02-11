@@ -2,8 +2,6 @@
 
 
 
-################### IMPORT MODULES #######################
-
 import rclpy
 import sys
 import cv2
@@ -99,22 +97,11 @@ def euler_to_quaternion(roll, pitch, yaw):
 
 
 
-##################### CLASS DEFINITION #######################
-
 class aruco_tf(Node):
-    '''
-    ___CLASS___
-
-    Description:    Class which servers purpose to define process for detecting aruco marker and publishing tf on pose estimated.
-    '''
+    
 
     def __init__(self):
-        '''
-        Description:    Initialization of class aruco_tf
-                        All classes have a function called __init__(), which is always executed when the class is being initiated.
-                        The __init__() function is called automatically every time the class is being used to create a new object.
-                        You can find more on this topic here -> https://www.w3schools.com/python/python_classes.asp
-        '''
+        
 
         super().__init__('aruco_tf_publisher')                                          # registering node
 
@@ -141,9 +128,6 @@ class aruco_tf(Node):
 
         self.box_pos = []
 
-        
-
-
         self.colour_image = None                                                            # colour raw image variable (from colorimagecb())
         self.depth_image = None       
         self.iter = 0
@@ -164,84 +148,20 @@ class aruco_tf(Node):
 
 
     def depthimagecb(self, data):
-        '''
-        Description:    Callback function for aligned depth camera topic. 
-                        Use this function to receive image depth data and convert to CV2 image
-
-        Args:
-            data (Image):    Input depth image frame received from aligned depth camera topic
-
-        Returns:
-        '''
-
-        ############ ADD YOUR CODE HERE ############
-
-        # INSTRUCTIONS & HELP : 
-
-        #	->  Use data variable to convert ROS Image message to CV2 Image type
-
-        #   ->  HINT: You may use CvBridge to do the same
-
-        ############################################
-
-        # bridge_2 = CvBridge()
+    
         self.depth_image = self.bridge.imgmsg_to_cv2(data,desired_encoding = 'passthrough')
 
-        # return self.depth_image
 
 
     def colorimagecb(self, data):
-        '''
-        Description:    Callback function for colour camera raw topic.
-                        Use this function to receive raw image data and convert to CV2 image
-
-        Args:
-            data (Image):    Input coloured raw image frame received from image_raw camera topic
-                    # print("j:" ,j)
-
-        Returns:
-        '''
-
-        ############ ADD YOUR CODE HERE ############
-
-        # INSTRUCTIONS & HELP : 
-
-        #	->  Use data variable to convert ROS Image message to CV2 Image type
-
-        #   ->  HINT:   You may use CvBridge to do the same
-        #               Check if you need any rotation or flipping image as input data maybe different than what you expect to be.
-        #               You may use cv2 functions such as 'flip' and 'rotate' to do the same
-
-        ############################################
-
-        # bridge_1 = CvBridge()
+    
         self.colour_image = self.bridge.imgmsg_to_cv2(data, 'bgr8')
 
 
 
         
     def detect_aruco(self, image):
-        '''
-        Description:    Function to perform aruco detection and return each detail of aruco detected 
-                        such as marker ID, distance, angle, width, center point location, etc.
-
-        Args:
-            image                   (Image):    Input image frame received from respective camera topic
-
-        Returns:
-            center_aruco_list       (list):     Center points of all aruco markers detected
-            distance_from_rgb_list  (list):     Distance value of each aruco markers detected from RGB camera
-            angle_aruco_list        (list):     Angle of all pose estimated for aruco marker
-            width_aruco_list        (list):     Width of all detected aruco markers
-            ids                     (list):     List of all aruco marker IDs detected in a single frame 
-        '''
-
-        ############ Function VARIABLES ############
-
-        # ->  You can remove these variables if needed. These are just for suggestions to let you get started
-
-        # Use this variable as a threshold value to detect aruco markers of certain size.
-        # Ex: avoid markers/boxes placed far away from arm's reach position  
+        
         aruco_area_threshold = 1500
 
         cam_mat = np.array([[931.1829833984375, 0.0, 640.0], [0.0, 931.1829833984375, 360.0], [0.0, 0.0, 1.0]])
@@ -250,19 +170,14 @@ class aruco_tf(Node):
 
         # We are using 150x150 aruco marker size
         size_of_aruco_m = 0.15
-
         # You can remove these variables after reading the instructions. These are just for sample.
         center_aruco_list = []
         # distance_from_rgb_list = []
         angle_aruco_list = []
         width_aruco_list = []
-        ids = []
-    
+        ids = []  
 
         arucoDict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
-
-       
-        # arucoParams = cv2.aruco.DetectorParameters()
 
         arucoParams = cv2.aruco.DetectorParameters()
         arucoParams.adaptiveThreshConstant = 10
@@ -271,21 +186,9 @@ class aruco_tf(Node):
         arucoParams.polygonalApproxAccuracyRate = 0.05
         arucoParams.minCornerDistanceRate = 0.05
         arucoParams.minDistanceToBorder = 3
-
-
-        # arucoParams.cornerRefinementMaxIterations = 80
-        # arucoParams.cornerRefinementMethod = 1
-        # arucoParams.polygonalApproxAccuracyRate = 0.05
-        # arucoParams.cornerRefinementWinSize = 20
-        # arucoParams.cornerRefinementMinAccuracy = 0.05
-        # arucoParams.perspectiveRemovePixelPerCell = 8
-        # arucoParams.maxErroneousBitsInBorderRate = 0.04
-        # arucoParams.errorCorrectionRate = 0.2
-        # arucoParams.adaptiveThreshWinSizeStep= 3
-        # arucoParams.adaptiveThreshWinSizeMax= 23
         blurred = cv2.GaussianBlur(image, (3, 3), 0)
 
-# Apply Laplacian filter for edge enhancement
+        # Apply Laplacian filter for edge enhancement
         laplacian = cv2.Laplacian(blurred, cv2.CV_64F)
 
         # Convert back to uint8
@@ -293,63 +196,30 @@ class aruco_tf(Node):
 
         # try:
         if self.condition_1 == True: #and self.condition_2 == True:
-            # try:
             (corners, ids, rejected) = cv2.aruco.detectMarkers(sharp, arucoDict, parameters=arucoParams)
             msg = Bool()
             msg.data = True
             print("publish")
             self.publisher_4.publish(msg)
 
-            # except Exception as e:
-            #     print(f"An error occurred: {e}")
-            # msg = Bool()
-            # msg.data = False
-            # self.publisher_4.publish(msg)
-
         elif self.condition_1 == False:
             print("else")
             msg = Bool()
             msg.data = False
             self.publisher_4.publish(msg)
-
-
-        
-
-
         old_corners = list(corners)
-        # del corners[0]
-        # print("\n",corners)
-
-
-        # corners = list(corners)
         new_corners = []
         for markerCorner in corners:
 		# extract the marker corners (which are always returned in
 		# top-left, top-right, bottom-right, and bottom-left order)
-            new_corners.append(markerCorner.reshape((1,8)))
-            
-        
+            new_corners.append(markerCorner.reshape((1,8)))       
 
         corners = new_corners
-
-        
-        # print(corners)
-
-        # print("\ncorner: ",corners[0].reshape(2,4))
-
         self.corners2D = []
         
-       # Convert each array into a nested list within the main list
-        corners = [arr.tolist() for arr in corners]
-
-  
+        corners = [arr.tolist() for arr in corners]  
         
         for i in range(len(corners)):
-            # corners[i] = list(corners[i].reshape(1,8))
-            # print("\n",corners[2][0])
-          
-
-            # print("\n",type(corners[i]))
 
             bruh = [(corners[i][0][0],corners[i][0][1]),(corners[i][0][2],corners[i][0][3]),(corners[i][0][4],corners[i][0][5]),(corners[i][0][6],corners[i][0][7])]
             self.corners2D.append(bruh)
@@ -361,17 +231,13 @@ class aruco_tf(Node):
             self.width_ar = distance_calc([self.corners2D[i][0],self.corners2D[i][1]])
             width_aruco_list.append(self.width_ar)
 
-     
-        
-       
 
         new_ids = ids
         new_ids = new_ids.flatten().tolist()
 
         j = 0
         while j<len(ids):
-           
-           
+                      
             if len(self.corners2D)<=j:
                 break
 
@@ -386,44 +252,19 @@ class aruco_tf(Node):
                     del new_ids[j]
 
                 else:
-                    j = j+1
-
-       
+                    j = j+1       
       
         
         corners = tuple(old_corners)
         if new_ids is not None:
             cv2.aruco.drawDetectedMarkers(self.colour_image, corners, np.array(new_ids))  
-       
-        
-      
-
-
-#------------------------------------------------------------------------------------------------------------------------------------------
-       
-
+   
         (angle_aruco_list, tvecs,p) = cv2.aruco.estimatePoseSingleMarkers(corners, size_of_aruco_m, cam_mat, dist_mat)
         
-
-       
-
-
-
-
         for l in range(len(tvecs)):
             cv2.drawFrameAxes(self.colour_image,cam_mat,dist_mat,angle_aruco_list[l],tvecs[l],0.1)
 
-
-        print("\ncenter1: ",center_aruco_list)
-      
-        
-       
         return center_aruco_list, angle_aruco_list, width_aruco_list, new_ids, tvecs
-
-
-
-
-
 
     def lookup(self,trans,center,ids):
         self.transform = TransformStamped()
@@ -437,26 +278,9 @@ class aruco_tf(Node):
         self.transform.transform.translation.y = trans[0]
         self.transform.transform.translation.z = trans[1]
    
-        # if center[1] in range(370,380): 
-        #     # print("bruh")
-        #     r1 = np.array([0.96613241,0,-0.25804681,0,1,0,0.25804681,0,0.96613241])
-        #     r1 = r1.reshape(3,3)
-        #     r2 = euler_to_rotation_matrix(0,np.deg2rad(90),0)
-        #     r3 = euler_to_rotation_matrix(0,0,np.deg2rad(90))
-        #     r = np.dot(r1,r2)
-        #     # r = r2
-        #     r = np.dot(r,r3)
-        #     r = R.from_matrix(r)
-        #     r = r.as_quat()
-        #     self.transform.transform.rotation.x = r[0]
-        #     self.transform.transform.rotation.y = r[1]
-        #     self.transform.transform.rotation.z = r[2]
-        #     self.transform.transform.rotation.w = r[3]
         y = center[1]
         x = center[0]
 
-        # if y>400 and y<410:
-            # print("breh")
             
         if x>=0 and x<1280/3:
             print("left")
@@ -475,9 +299,7 @@ class aruco_tf(Node):
 
         roll = 0
         pitch = 0 
-        # yaw = self.ang_list[self.iter][0][2]
         yaw = (0.788*self.ang_list[self.iter][0][2]) - ((self.ang_list[self.iter][0][2]**2)/3160) 
-        # yaw = 0
         r1 = np.array([0.96613241,0,-0.25804681,0,1,0,0.25804681,0,0.96613241])
         r1 = r1.reshape(3,3)
 
@@ -496,10 +318,6 @@ class aruco_tf(Node):
         self.transform.transform.rotation.z = r[2]
         self.transform.transform.rotation.w = r[3]
 
-        # self.transform.transform.rotation.x = r[1]
-        # self.transform.transform.rotation.y = r[2]
-        # self.transform.transform.rotation.z = r[3]
-        # self.transform.transform.rotation.w = r[0]
         msg = BoxOrientation()
         msg.id = ids
         msg.position = a
@@ -511,7 +329,7 @@ class aruco_tf(Node):
 
     def on_timer(self):
         try:
-        # Listen to the transform
+            # Listen to the transform
             t = self.tf_buffer.lookup_transform('base_link','cam_'+str(self.new_ids[self.iter]), rclpy.time.Time())
             t2 = self.tf_buffer.lookup_transform('base_link','tool0', rclpy.time.Time())
 
@@ -538,30 +356,14 @@ class aruco_tf(Node):
             msg.z = t2.transform.translation.z
             self.publisher_3.publish(msg)
 
-          
-            # print("old box pose: ",self.box_pos)
-            # self.box_pos.pop(0)
+
             self.box_pos = [[self.new_ids[self.iter],[t.transform.translation.x,t.transform.translation.y,t.transform.translation.z]]]
-            # print("idk")
-            # print("new box pose: ",self.box_pos)
-     
+    
             
         except:
             self.get_logger().error(f"Error while looking up transform")
 
     def process_image(self):
-        '''
-        Description:    Timer function used to detect aruco markers and publish tf on estimated poses.
-
-        Args:
-        Returns:
-        '''
-
-        ############ Function VARIABLES ############
-
-        # These are the variables defined from camera info topic such as image pixel size, focalX, focalY, etc.
-        # Make sure you verify these variable values once. As it may affect your result.
-        # You can find more on these variables here -> http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/CameraInfo.html
         
         sizeCamX = 1280
         sizeCamY = 720
@@ -569,10 +371,7 @@ class aruco_tf(Node):
         centerCamY = 360
         focalX = 931.1829833984375
         focalY = 931.1829833984375
-        
-            
 
-        ############ ADD YOUR CODE HERE ###########
         try:
             (center_aruco_list,  angle_aruco_list, width_aruco_list, new_ids,tvecs) = self.detect_aruco(self.colour_image)
             print(self.j)
@@ -580,16 +379,8 @@ class aruco_tf(Node):
             if self.j == 0:
                 self.center_aruco_list = center_aruco_list
                 self.new_ids = new_ids
-            
-            print("\ncenter2: ",self.center_aruco_list)
-            print("\nids: ",self.new_ids)
-            # print("\nids2: ",new_ids)
-
-            # print("\ncenter: ",center_aruco_list)
 
             self.quat = []
-
-            # print(angle_aruco_list)
             self.ang_correc = []
 
             
@@ -618,114 +409,32 @@ class aruco_tf(Node):
             print(self.iter)
             self.lookup(self.aruco_center[self.iter],self.center_aruco_list[self.iter],self.new_ids[self.iter])
             self.timer2 = self.create_timer(1.0, self.on_timer)
-            # self.on_timer()
-
-            # print("\n box pos: ",self.box_pos)
-
-            # if self.j>8:
-            #     self.msg = BoxTransformation()
-            #     self.msg.x = self.box_pos[self.iter][1][0]
-            #     self.msg.y = self.box_pos[self.iter][1][1]
-            #     self.msg.z = self.box_pos[self.iter][1][2]
-            #     self.msg.id = self.box_pos[self.iter][0]
-            #     self.publisher_2.publish(self.msg)
-
-            # if len(self.box_pos)>=2:
-            print("\n box pos: ",self.box_pos)
+            
             self.msg = BoxTransformation()
             self.msg.x = self.box_pos[self.iter][1][0]
             self.msg.y = self.box_pos[self.iter][1][1]
             self.msg.z = self.box_pos[self.iter][1][2]
             self.msg.id = self.box_pos[self.iter][0]
-            # print(self.msg)
-            # print("hep")
             self.publisher_2.publish(self.msg)
-            # print("hep2")
-
-
-            
-            # if self.iter==0:
-
-            #     self.iter = 0
-
-            # else:
-            #     self.iter = self.iter + 1
-
-            # self.j = self.j + 1
-
-
-    #         blurred = cv2.GaussianBlur(self.colour_image, (3, 3), 0)
-
-    # # Apply Laplacian filter for edge enhancement
-    #         laplacian = cv2.Laplacian(blurred, cv2.CV_64F)
-
-    #         # Convert back to uint8
-    #         sharp = np.clip(self.colour_image - 0.7 * laplacian, 0, 255).astype(np.uint8)
-    #         cv2.imshow('Colour image',sharp)
-    #         cv2.waitKey(0)
-
+           
         except:
             print("we are here to stay :)")
-            # msg = Bool()
-            # msg.data = False
-            # self.publisher_4.publish(msg)
-
-        # else:
-        #     print("else")
-        #     msg = Bool()
-        #     msg.data = False
-        #     self.publisher_4.publish(msg)
-
-
-      
- 
-
-
-        
-
             
-                #   ->  Then finally lookup transform between base_link an  
-                # d obj frame to publish the TF
-        #       You may use 'lookup_transform' function to pose of obj frame w.r.t base_link 
-
-        #   ->  And now publish TF between object frame and base_link
-        #       Use the following frame_id-
-        #           frame_id = 'base_link'
-        #           child_frame_id = 'obj_<marker_id>'          Ex: obj_20, where 20 is aruco marker ID
-
-        #   ->  At last show cv2 image window having detected markers drawn and center points located using 'cv2.imshow' function.
-        #       Refer MD book on portal for sample image -> https://portal.e-yantra.org/
-
-        #   ->     The Z axis of TF should be pointing inside the box (Purpose of this will be known in task 1B)
-        #               Also, auto eval script will be judging angular difference aswell. So, make sure that Z axis is inside the box (Refer sample images on Portal - MD book)
-
-        ############################################
-
-
-##################### FUNCTION DEFINITION #######################
 
 def main():
-    '''
-    Description:    Main function which creates a ROS node and spin around for the aruco_tf class to perform it's task
-    '''
+
 
     rclpy.init(args=sys.argv)                                       # initialisation
-
     node = rclpy.create_node('aruco_tf_process')                    # creating ROS node
-
     node.get_logger().info('Node created: Aruco tf process')        # logging information
-
     aruco_tf_class = aruco_tf()                                     # creating a new object for class 'aruco_tf'
 
-  
-    
+     
     try:
         rclpy.spin(aruco_tf_class)  
     except KeyboardInterrupt:
         pass  
-
-                                      # spining on the object to make it alive in ROS 2 DDS
-
+                
     aruco_tf_class.destroy_node()                                   # destroy node after spin ends
 
     rclpy.shutdown()                    
@@ -733,12 +442,6 @@ def main():
 
 
 if __name__ == '__main__':
-    '''
-    Description:    If the python interpreter is running that module (the source file) as the main program, 
-                    it sets the special __name__ variable to have a value “__main__”. 
-                    If this file is being imported from another module, __name__ will be set to the module’s name.
-                    You can find more on this here -> https://www.geeksforgeeks.org/what-does-the-if-__name__-__main__-do/
-    '''
-  
+    
     main()
     # cv2.destroyAllWindows()

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(warehouse)
+project(eyantra_warehouse)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)

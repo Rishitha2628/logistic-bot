@@ -53,8 +53,9 @@ install(
   DESTINATION lib/${PROJECT_NAME}
 )
 
+
 install(PROGRAMS
-	scripts/ebot_docking_service_task3b.py
+	scripts/dock_service.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
